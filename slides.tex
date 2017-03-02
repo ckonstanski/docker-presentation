@@ -119,7 +119,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Using Docker: Docker Hub}
+  \frametitle{Docker Hub}
 
   Docker Hub is a public web service: https://hub.docker.com/explore/
 
@@ -140,11 +140,31 @@
 \begin{frame}
   \frametitle{Dockerfile}
 
-  
+  The presupplied images on Docker Hub are good starting points. But
+  you will want to build highly customized images. This is
+  accomplished by writing a Dockerfile and running the docker build
+  command against it.
 
-  \includegraphics[scale=0.48]{image_1}
+  Sample Dockerfile:
+
+  \includegraphics[scale=0.48]{image_3}
+
+  And here is a simple wrapper script to call the docker build command:
+
+  \includegraphics[scale=0.48]{image_4}
+
+  Notice that it does not point at a Dockerfile. Instead it just
+  points to the current directory where it is assumed that a
+  Dockerfile exists.
 \end{frame}
 
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  Running the build of the do-nothing ubuntu image:
+
+  \includegraphics[scale=0.48]{image_2}
+\end{frame}
 
 
 
