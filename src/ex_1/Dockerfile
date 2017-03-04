@@ -6,4 +6,3 @@ ADD wwwroot/page1.html /var/www/html/
 EXPOSE 80
 VOLUME /var/www/html/static
 CMD [ "/usr/sbin/apache2ctl", "-D", "FOREGROUND" ]
-
