@@ -147,25 +147,237 @@
 
   Sample Dockerfile:
 
-  \includegraphics[scale=0.48]{image_3}
+  \includegraphics[scale=0.44]{image_3}
 
   And here is a simple wrapper script to call the docker build command:
 
   \includegraphics[scale=0.48]{image_4}
 
-  Notice that it does not point at a Dockerfile. Instead it just
-  points to the current directory where it is assumed that a
-  Dockerfile exists.
+  Notice that the build command does reference Dockerfile, but rather
+  the entire current directory. The entire contents of the path will
+  get tarred up and passed to the docker container.
 \end{frame}
 
 \begin{frame}
   \frametitle{Dockerfile}
 
-  Building this sample docker image:
+  Building this sample docker image (lots of output elided):
 
-  \includegraphics[scale=0.48]{image_2}
+  \includegraphics[scale=0.44]{image_2}
+
+  \includegraphics[scale=0.44]{image_5}
+
+  \includegraphics[scale=0.44]{image_6}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  The built image and its dependent ubuntu:latest image:
+
+  \includegraphics[scale=0.44]{image_7}
+
+  Starting the container:
+
+  \includegraphics[scale=0.44]{image_8}
+
+  Listing the running container:
+
+  \includegraphics[scale=0.44]{image_9}
+
+  Attaching to the container with a shell and viewing the running
+  processes:
+
+  \includegraphics[scale=0.44]{image_10}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  Proof that the container has its own filesystem:
+
+  \includegraphics[scale=0.44]{image_11}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  The contents of a container are immutable. Any changes inside the
+  container will only persist until it is stopped. The changes live in
+  memory only.
+
+  Before:
+
+  \includegraphics[scale=0.44]{image_12}
+
+  Modify the HTML file:
+
+  \includegraphics[scale=0.44]{image_14}
+
+  After:
+
+  \includegraphics[scale=0.44]{image_13}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  Stop and restart the container:
+
+  \includegraphics[scale=0.44]{image_15}
+
+  The HTML file is back to its original state:
+
+  \includegraphics[scale=0.44]{image_16}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  The way to get filesystem changes to persist is to mount an external
+  volume. Our container has such a volume. Recall this line from the
+  Dockerfile:
+
+  \includegraphics[scale=0.44]{image_17}
+
+  And the -v switch in our run command:
+
+  \includegraphics[scale=0.44]{image_18}
+
+  This causes
+  /root/docker-presentation/src/ex\textunderscore1/wwwroot/static on
+  the host filesystem to be mounted at /var/www/html/static inside the
+  container. When processes inside the container modify these files,
+  they are actually written to disk on the host filesystem.
+
+  This feature allows the use of containers for databases as one
+  obvious example. A database that could not persist its data would be
+  useless in most cases. (Occasionally it might actually be a good
+  thing.)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  There is a stylesheet in this volume. Let's modify it while the
+  container is running:
+
+  The stylesheet before modifying:
+
+  \includegraphics[scale=0.44]{image_19}
+
+  Modify the stylesheet:
+
+  \includegraphics[scale=0.44]{image_20}
+
+  The container sees the change to the stylesheet:
+
+  \includegraphics[scale=0.44]{image_21}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dockerfile}
+
+  Restart the container:
+
+  \includegraphics[scale=0.44]{image_22}
+
+  The stylesheet still contains the change:
+
+  \includegraphics[scale=0.44]{image_23}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Networking}
+
+  The docker daemon creates a private subnet bridge on the host. The
+  gateway of this subnet is the docker0 port.
+
+  \includegraphics[scale=0.44]{image_24}
+
+  Containers can be run in a variety of networking modes:
+
+  \begin{itemize}
+  \item as a node on the docker0 bridge
+  \item use a bridge other than the docker0 bridge
+  \item attached directly to the host network stack
+  \item reuse an existing container's network stack
+  \item no networking
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Networking}
+
+  We have been running our container attached directly to the
+  host. Notice the --net=host switch in the run command:
+
+  \includegraphics[scale=0.44]{image_18}
+
+  Let's run it attached to the docker0 subnet (default behavior):
+
+  \includegraphics[scale=0.44]{image_25}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Networking}
+
+  In addition to the docker0 bridge, firewall rules are created to
+  allow/deny traffic appropriately.
+
+  FORWARD rules:
+
+  \includegraphics[scale=0.44]{image_26}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Networking}
+
+  NAT rules:
+
+  \includegraphics[scale=0.44]{image_27}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why Use Docker?}
+
+  By this point you should have a good feel for what docker is. The
+  burning question now is: what is docker good for? In this admittedly
+  cursory tutorial I have shown you nothing that couldn't be done
+  without docker. And I saved this important question for the end when
+  usually it would be the first topic. This is because whenever I talk
+  to people about docker without taking the time to first explain what
+  docker is, I find it difficult to intelligibly discuss its
+  uses. It's like describing color to a blind person. One has to know
+  what docker is first.
+
+  One doesn't choose docker first and then look for reasons to justify
+  it. Docker comes into consideration when a problem crops up that
+  needs a solution that docker can provide. Even though docker is a
+  means to and end and not an end unto itself, there are many reasons
+  to use it. Here are just a few that I have personally encountered:
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why Use Docker?}
+
+  \begin{itemize}
+  \item Contain an application's dependencies to avoid fighting with
+    packages and configuration installed on the host OS
+  \item Run a multi-tier distributed application on one host which
+    would otherwise require many hosts
+  \item Simplify deployment. One only needs to pull a container. All
+    of that messy server configuration can be avoided.
+  \item Make it easy to roll back to an earlier version of an
+    application without leaving any kruft behind
+  \item Use something lighter-weight than a virtual machine. Less
+    resource consumption.
+  \item Deploy a large and complex application stack very fast because
+    it is prebuilt
+  \item Upgrade an application with less downtime
+  \end{itemize}
+
+\end{frame}
 
 
 \end{document}
