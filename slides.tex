@@ -86,9 +86,6 @@
   and cgroups:
 
   https://jvns.ca/blog/2016/10/10/what-even-is-a-container/
-
-  There are also some extra goodies that docker supplies which we will
-  look at soon.
 \end{frame}
 
 \begin{frame}
@@ -125,7 +122,7 @@
 
   It contains lots of free prebuilt docker images. An image can be
   downloaded by using the docker pull command or by referenceing it in
-  your Dockerfile (more on this later).
+  your Dockerfile.
 \end{frame}
 
 \begin{frame}
@@ -153,9 +150,9 @@
 
   \includegraphics[scale=0.48]{image_4}
 
-  Notice that the build command does reference Dockerfile, but rather
-  the entire current directory. The entire contents of the path will
-  get tarred up and passed to the docker container.
+  Notice that the build command does not reference Dockerfile, but
+  rather the entire current directory. The entire contents of the path
+  will get tarred up and passed to the docker container.
 \end{frame}
 
 \begin{frame}
