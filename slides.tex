@@ -156,19 +156,25 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Building}
 
   Building this sample docker image (lots of output elided):
 
   \includegraphics[scale=0.44]{image_2}
 
   \includegraphics[scale=0.44]{image_5}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Building}
+
+  Building this sample docker image cont'd:
 
   \includegraphics[scale=0.44]{image_6}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Running}
 
   The built image and its dependent ubuntu:latest image:
 
@@ -189,7 +195,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Chroot Filesystem}
 
   Proof that the container has its own filesystem:
 
@@ -197,7 +203,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Immutable}
 
   The contents of a container are immutable. Any changes inside the
   container will only persist until it is stopped. The changes live in
@@ -217,7 +223,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Immutable}
 
   Stop and restart the container:
 
@@ -229,7 +235,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Volumes}
 
   The way to get filesystem changes to persist is to mount an external
   volume. Our container has such a volume. Recall this line from the
@@ -254,7 +260,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Volumes}
 
   There is a stylesheet in this volume. Let's modify it while the
   container is running:
@@ -273,7 +279,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dockerfile}
+  \frametitle{Volumes}
 
   Restart the container:
 
@@ -311,7 +317,8 @@
 
   \includegraphics[scale=0.44]{image_18}
 
-  Let's run it attached to the docker0 subnet (default behavior):
+  Let's run it attached to the docker0 subnet (default behavior). It
+  comes up as 172.17.0.2 on the docker0 bridge:
 
   \includegraphics[scale=0.44]{image_25}
 \end{frame}
@@ -319,8 +326,8 @@
 \begin{frame}
   \frametitle{Networking}
 
-  In addition to the docker0 bridge, firewall rules are created to
-  allow/deny traffic appropriately.
+  Firewall rules are created automatically by the docker daemon to
+  control access to the docker0 bridge.
 
   FORWARD rules:
 
@@ -342,10 +349,10 @@
   burning question now is: what is docker good for? In this admittedly
   cursory tutorial I have shown you nothing that couldn't be done
   without docker. And I saved this important question for the end when
-  usually it would be the first topic. This is because whenever I talk
-  to people about docker without taking the time to first explain what
-  docker is, I find it difficult to intelligibly discuss its
-  uses. It's like describing color to a blind person. One has to know
+  usually it would be the opening topic. This is because whenever I
+  talk to people about docker without taking the time to first explain
+  what docker is, I find it difficult to intelligibly discuss its use
+  cases. It's like describing color to a blind person. One has to know
   what docker is first.
 
   One doesn't choose docker first and then look for reasons to justify
@@ -370,11 +377,10 @@
   \item Use something lighter-weight than a virtual machine. Less
     resource consumption.
   \item Deploy a large and complex application stack very fast because
-    it is prebuilt
+    it is prebuilt, and in an orchestrated manner (see docker-compose)
   \item Upgrade an application with less downtime
   \end{itemize}
 
 \end{frame}
-
 
 \end{document}
